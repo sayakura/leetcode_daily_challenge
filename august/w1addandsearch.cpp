@@ -35,29 +35,13 @@ public:
         t->isWord = true;
     }
     
-    bool search(string word) {
-        auto t = root;
+    bool search(string word, TrieNode *r = nullptr) {
+        TrieNode *t = r ? r : root;
         for (int i = 0; i < word.size(); i++) {
             char c = word[i];
             if (c == '.') {
                 for (auto child : t->children)
-                    if (child && search(word.substr(i + 1, word.size() - (i + 1)), child))
-                        return true;
-                return false;
-            }
-            if (!t->children[c - 'a'])
-                return false;
-            t = t->children[c - 'a'];
-        }
-        return t->isWord;
-    }
-    bool search(string word, TrieNode *r) {
-        auto t = r;
-        for (int i = 0; i < word.size(); i++) {
-            char c = word[i];
-            if (c == '.') {
-                for (auto child : t->children)
-                    if (child && search(word.substr(i + 1, word.size() - (i + 1)), child))
+                    if (child && search(word.substr(i + 1), child))
                         return true;
                 return false;
             }
@@ -68,6 +52,7 @@ public:
         return t->isWord;
     }
 };
+
 
 int main() {
     WordDictionary w;
